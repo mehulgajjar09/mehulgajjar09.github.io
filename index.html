@@ -1959,6 +1959,8 @@
   // ── Visitor Counter (unique by IP via CountAPI) ──
   (function() {
     const KEY_LAST = 'mv_resume_last_visit';
+    const KEY_LAST_KNOWN_TOTAL = 'mv_resume_last_known_total';
+    const KEY_LOCAL_FALLBACK_COUNT = 'mv_resume_local_fallback_count';
     const COUNTER_NAMESPACE = 'mehul-info';
     const UNIQUE_TOTAL_KEY = 'unique-visitors-total';
 
@@ -1986,6 +1988,9 @@
     function animateCount(target) {
       if (!el) return;
       const safeTarget = Math.max(0, Number.parseInt(target, 10) || 0);
+      try {
+        localStorage.setItem(KEY_LAST_KNOWN_TOTAL, String(safeTarget));
+      } catch (e) {}
       let cur = 0;
       const step = Math.max(1, Math.floor(safeTarget / 40));
       const timer = setInterval(() => {
@@ -1996,34 +2001,48 @@
     }
 
     async function getJson(url) {
-      const res = await fetch(url, { cache: 'no-store' });
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
+      const res = await fetch(url, { cache: 'no-store', signal: controller.signal });
+      clearTimeout(timeoutId);
       if (!res.ok) throw new Error('Request failed');
       return res.json();
     }
 
+    async function resolveVisitorIp() {
+      const providers = [
+        'https://api64.ipify.org?format=json',
+        'https://api.ipify.org?format=json'
+      ];
+
+      for (const url of providers) {
+        try {
+          const data = await getJson(url);
+          if (data && data.ip) return data.ip;
+        } catch (e) {}
+      }
+      throw new Error('Unable to resolve IP');
+    }
+
     async function getOrCreateUniqueCount() {
-      // Fetch visitor IP from a public API.
-      const ipData = await getJson('https://api64.ipify.org?format=json');
-      const ip = (ipData && ipData.ip) ? ipData.ip : '';
-      if (!ip) throw new Error('Unable to resolve IP');
+      // Fetch visitor IP from public APIs.
+      const ip = await resolveVisitorIp();
 
       // CountAPI keys cannot safely use raw IP characters.
-      const ipKey = 'visitor-' + btoa(ip).replace(/=+$/g, '');
-      const visitorKeyUrl = 'https://api.countapi.xyz/get/' + COUNTER_NAMESPACE + '/' + ipKey;
+      // URL-safe key: avoid "/" and "+" from base64 in path segments.
+      const ipKey = 'visitor-' + btoa(ip)
+        .replace(/=+$/g, '')
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_');
 
-      let isFirstSeen = false;
-      try {
-        const visitorData = await getJson(visitorKeyUrl);
-        isFirstSeen = !(visitorData && typeof visitorData.value === 'number');
-      } catch (e) {
-        // 404/failed lookup -> treat as first seen.
-        isFirstSeen = true;
-      }
+      // Reliable unique check:
+      // First hit for this IP returns value=1; later visits return >1.
+      const visitorHit = await getJson('https://api.countapi.xyz/hit/' + COUNTER_NAMESPACE + '/' + ipKey);
+      const isFirstSeen = visitorHit && Number(visitorHit.value) === 1;
 
       if (isFirstSeen) {
-        await getJson('https://api.countapi.xyz/hit/' + COUNTER_NAMESPACE + '/' + ipKey);
-        const hitData = await getJson('https://api.countapi.xyz/hit/' + COUNTER_NAMESPACE + '/' + UNIQUE_TOTAL_KEY);
-        return (hitData && typeof hitData.value === 'number') ? hitData.value : 0;
+        const totalHit = await getJson('https://api.countapi.xyz/hit/' + COUNTER_NAMESPACE + '/' + UNIQUE_TOTAL_KEY);
+        return (totalHit && typeof totalHit.value === 'number') ? totalHit.value : 0;
       }
 
       const totalData = await getJson('https://api.countapi.xyz/get/' + COUNTER_NAMESPACE + '/' + UNIQUE_TOTAL_KEY);
@@ -2036,7 +2055,19 @@
     getOrCreateUniqueCount()
       .then((count) => animateCount(count))
       .catch(() => {
-        if (el) el.textContent = '—';
+        if (!el) return;
+        try {
+          const cached = Number.parseInt(localStorage.getItem(KEY_LAST_KNOWN_TOTAL) || '0', 10);
+          if (Number.isFinite(cached) && cached > 0) {
+            animateCount(cached);
+            return;
+          }
+          const localFallback = Math.max(0, Number.parseInt(localStorage.getItem(KEY_LOCAL_FALLBACK_COUNT) || '0', 10)) + 1;
+          localStorage.setItem(KEY_LOCAL_FALLBACK_COUNT, String(localFallback));
+          animateCount(localFallback);
+          return;
+        } catch (e) {}
+        el.textContent = '—';
       });
   })();
 
