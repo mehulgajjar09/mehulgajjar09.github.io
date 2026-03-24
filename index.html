@@ -1956,48 +1956,88 @@
      JAVASCRIPT
 ══════════════════════════════════════ -->
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  // ── Visitor Counter (localStorage-based, persistent per browser) ──
+  // ── Visitor Counter (unique by IP via CountAPI) ──
   (function() {
-    try {
-      const KEY_COUNT = 'mv_resume_visits';
-      const KEY_LAST  = 'mv_resume_last_visit';
-      const KEY_SESSION = 'mv_resume_session';
+    const KEY_LAST = 'mv_resume_last_visit';
+    const COUNTER_NAMESPACE = 'mehul-info';
+    const UNIQUE_TOTAL_KEY = 'unique-visitors-total';
 
-      // Only count once per browser session
-      const isNewSession = !sessionStorage.getItem(KEY_SESSION);
-      let count = parseInt(localStorage.getItem(KEY_COUNT) || '0', 10);
+    const el = document.getElementById('visitorCount');
+    const lastEl = document.getElementById('lastVisit');
 
-      if (isNewSession) {
-        count += 1;
-        localStorage.setItem(KEY_COUNT, count);
-        localStorage.setItem(KEY_LAST, new Date().toISOString());
-        sessionStorage.setItem(KEY_SESSION, '1');
+    function setLastVisit() {
+      try {
+        const now = new Date();
+        const previousVisitRaw = localStorage.getItem(KEY_LAST);
+        localStorage.setItem(KEY_LAST, now.toISOString());
+
+        const previousVisit = previousVisitRaw ? new Date(previousVisitRaw) : null;
+        const hasValidPreviousVisit = previousVisit instanceof Date && !Number.isNaN(previousVisit.getTime());
+        if (lastEl) {
+          lastEl.textContent = hasValidPreviousVisit
+            ? previousVisit.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+            : 'First visit';
+        }
+      } catch (e) {
+        if (lastEl) lastEl.textContent = 'Unavailable';
       }
-
-      const lastRaw = localStorage.getItem(KEY_LAST);
-      const lastDate = lastRaw ? new Date(lastRaw) : new Date();
-      const formatted = lastDate.toLocaleDateString('en-IN', {
-        day: 'numeric', month: 'short', year: 'numeric'
-      });
-
-      // Animate the counter rolling up
-      const el = document.getElementById('visitorCount');
-      const lastEl = document.getElementById('lastVisit');
-      if (el) {
-        let cur = 0;
-        const step = Math.max(1, Math.floor(count / 40));
-        const timer = setInterval(() => {
-          cur = Math.min(cur + step, count);
-          el.textContent = cur.toLocaleString('en-IN');
-          if (cur >= count) clearInterval(timer);
-        }, 28);
-      }
-      if (lastEl) lastEl.textContent = formatted;
-    } catch(e) {
-      // localStorage blocked (private mode) — show fallback
-      const el = document.getElementById('visitorCount');
-      if (el) el.textContent = '—';
     }
+
+    function animateCount(target) {
+      if (!el) return;
+      const safeTarget = Math.max(0, Number.parseInt(target, 10) || 0);
+      let cur = 0;
+      const step = Math.max(1, Math.floor(safeTarget / 40));
+      const timer = setInterval(() => {
+        cur = Math.min(cur + step, safeTarget);
+        el.textContent = cur.toLocaleString('en-IN');
+        if (cur >= safeTarget) clearInterval(timer);
+      }, 28);
+    }
+
+    async function getJson(url) {
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) throw new Error('Request failed');
+      return res.json();
+    }
+
+    async function getOrCreateUniqueCount() {
+      // Fetch visitor IP from a public API.
+      const ipData = await getJson('https://api64.ipify.org?format=json');
+      const ip = (ipData && ipData.ip) ? ipData.ip : '';
+      if (!ip) throw new Error('Unable to resolve IP');
+
+      // CountAPI keys cannot safely use raw IP characters.
+      const ipKey = 'visitor-' + btoa(ip).replace(/=+$/g, '');
+      const visitorKeyUrl = 'https://api.countapi.xyz/get/' + COUNTER_NAMESPACE + '/' + ipKey;
+
+      let isFirstSeen = false;
+      try {
+        const visitorData = await getJson(visitorKeyUrl);
+        isFirstSeen = !(visitorData && typeof visitorData.value === 'number');
+      } catch (e) {
+        // 404/failed lookup -> treat as first seen.
+        isFirstSeen = true;
+      }
+
+      if (isFirstSeen) {
+        await getJson('https://api.countapi.xyz/hit/' + COUNTER_NAMESPACE + '/' + ipKey);
+        const hitData = await getJson('https://api.countapi.xyz/hit/' + COUNTER_NAMESPACE + '/' + UNIQUE_TOTAL_KEY);
+        return (hitData && typeof hitData.value === 'number') ? hitData.value : 0;
+      }
+
+      const totalData = await getJson('https://api.countapi.xyz/get/' + COUNTER_NAMESPACE + '/' + UNIQUE_TOTAL_KEY);
+      return (totalData && typeof totalData.value === 'number') ? totalData.value : 0;
+    }
+
+    setLastVisit();
+    if (el) el.textContent = '...';
+
+    getOrCreateUniqueCount()
+      .then((count) => animateCount(count))
+      .catch(() => {
+        if (el) el.textContent = '—';
+      });
   })();
 
   // Download / Print Resume as PDF
