@@ -878,18 +878,27 @@
     }
 
     .scroll-top {
-      position: fixed; bottom: 28px; right: 28px;
-      width: 44px; height: 44px;
+      position: fixed; bottom: 24px; right: 20px;
+      width: 48px; height: 48px;
       background: var(--accent);
-      border-radius: 12px;
+      border-radius: 14px;
       display: flex; align-items: center; justify-content: center;
-      cursor: pointer; box-shadow: 0 4px 16px rgba(62,207,173,0.4);
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(62,207,173,0.45);
       opacity: 0; visibility: hidden;
       transition: all var(--transition);
-      z-index: 99;
+      z-index: 150;
+      border: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
     .scroll-top.visible { opacity: 1; visibility: visible; }
-    .scroll-top svg { width: 18px; height: 18px; color: var(--navy); }
+    .scroll-top:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(62,207,173,0.55); }
+    .scroll-top:active { transform: scale(0.92); }
+    .scroll-top svg { width: 20px; height: 20px; color: var(--navy); pointer-events: none; }
+    @media (max-width: 768px) {
+      .scroll-top { bottom: 20px; right: 16px; width: 52px; height: 52px; border-radius: 16px; }
+    }
 
     /* ═══════════════════════════════════════════════
        DIVIDER
@@ -1087,7 +1096,6 @@
           </div>
         </div>
         <div class="tech-stack-mini">
-          <span class="chip">Vibe Coding</span>
           <span class="chip">Kotlin</span>
           <span class="chip blue">Jetpack Compose</span>
           <span class="chip">MVVM</span>
@@ -1754,6 +1762,20 @@
           </div>
         </div>
 
+        <div class="cert-item">
+          <div class="cert-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+          </div>
+          <div style="flex:1;">
+            <div class="cert-name">Android Jetpack Compose: The Comprehensive Bootcamp</div>
+            <div class="cert-org">Udemy / Online Learning</div>
+            <a href="https://drive.google.com/file/d/1sVNt_Bowh3ixT7idlQyZHST3pLmNOJhA/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="cert-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              View Certificate
+            </a>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -2018,9 +2040,13 @@
 
   // Scroll-to-top visibility
   const scrollTopBtn = document.getElementById('scrollTop');
-  window.addEventListener('scroll', () => {
-    scrollTopBtn.classList.toggle('visible', window.scrollY > 400);
-  }, { passive: true });
+  function handleScroll() {
+    scrollTopBtn.classList.toggle('visible', window.scrollY > 300);
+  }
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  window.addEventListener('touchmove', handleScroll, { passive: true });
+  // Show immediately if already scrolled (e.g. page reload)
+  handleScroll();
 
   // Intersection observer for subtle fade-in
   const observer = new IntersectionObserver((entries) => {
