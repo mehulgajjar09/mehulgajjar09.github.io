@@ -895,7 +895,7 @@
     .scroll-top.visible { opacity: 1; visibility: visible; }
     .scroll-top:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(62,207,173,0.55); }
     .scroll-top:active { transform: scale(0.92); }
-    .scroll-top svg { width: 20px; height: 20px; color: var(--navy); pointer-events: none; }
+    .scroll-top svg { width: 20px; height: 20px; color: var(--white); pointer-events: none; }
     @media (max-width: 768px) {
       .scroll-top { bottom: 20px; right: 16px; width: 52px; height: 52px; border-radius: 16px; }
     }
@@ -1032,7 +1032,7 @@
             <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
             GitHub
           </a>
-          <a href="/cdn-cgi/l/email-protection#1c71797469707b7d76767d6e7d796f5c7b717d7570327f7371" class="btn btn-outline">
+          <a href="mailto:mehulgajjaraes@gmail.com" class="btn btn-outline">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,4 12,13 2,4"/></svg>
             Email Me
           </a>
@@ -1144,7 +1144,7 @@
           </div>
           <div class="info-row">
             <span class="info-key">Email</span>
-            <span class="info-val" style="font-size:0.78rem;"><a href="/cdn-cgi/l/email-protection#3f525a574a53585e55555e4d5e5a4c7f58525e5653115c5052">mehulgajjaraes&#64;gmail&#46;com</a></span>
+            <span class="info-val" style="font-size:0.78rem;"><a href="mailto:mehulgajjaraes@gmail.com">mehulgajjaraes&#64;gmail&#46;com</a></span>
           </div>
           <div class="info-row">
             <span class="info-key">Status</span>
@@ -1826,7 +1826,7 @@
           </div>
           <div>
             <div class="contact-item-label">Email</div>
-            <div class="contact-item-value"><a href="/cdn-cgi/l/email-protection#315c5459445d56505b5b504350544271565c50585d1f525e5c">mehulgajjaraes&#64;gmail&#46;com</a></div>
+            <div class="contact-item-value"><a href="mailto:mehulgajjaraes@gmail.com">mehulgajjaraes&#64;gmail&#46;com</a></div>
           </div>
         </div>
 
@@ -1855,7 +1855,7 @@
         <div class="label">Availability</div>
         <h3 class="display">Open to Senior Roles</h3>
         <p>Looking for challenging Senior Android Developer positions where I can contribute to innovative mobile products and lead engineering teams.</p>
-        <a href="/cdn-cgi/l/email-protection#acc1c9c4d9c0cbcdc6c6cddecdc9dfeccbc1cdc5c082cfc3c1" class="btn btn-primary" style="width:100%; justify-content:center; margin-top:4px;">
+        <a href="mailto:mehulgajjaraes@gmail.com" class="btn btn-primary" style="width:100%; justify-content:center; margin-top:4px;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,4 12,13 2,4"/></svg>
           Send Email
         </a>
@@ -2053,4 +2053,18 @@
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.style.opacity = '1';
-        entry.target.style.transfor
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.exp-card, .project-card, .skill-category, .edu-item, .cert-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(14px)';
+    el.style.transition = 'opacity 0.45s ease, transform 0.45s ease';
+    observer.observe(el);
+  });
+</script>
+
+</body>
+</html>
