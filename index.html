@@ -1032,7 +1032,7 @@
             <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
             GitHub
           </a>
-          <a href="mailto:mehulgajjaraes@gmail.com" class="btn btn-outline">
+          <a href="/cdn-cgi/l/email-protection#e588808d908982848f8f8497848096a58288848c89cb868a88" class="btn btn-outline">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,4 12,13 2,4"/></svg>
             Email Me
           </a>
@@ -1144,7 +1144,7 @@
           </div>
           <div class="info-row">
             <span class="info-key">Email</span>
-            <span class="info-val" style="font-size:0.78rem;"><a href="mailto:mehulgajjaraes@gmail.com">mehulgajjaraes&#64;gmail&#46;com</a></span>
+            <span class="info-val" style="font-size:0.78rem;"><a href="/cdn-cgi/l/email-protection#8ce1e9e4f9e0ebede6e6edfeede9ffccebe1ede5e0a2efe3e1">mehulgajjaraes&#64;gmail&#46;com</a></span>
           </div>
           <div class="info-row">
             <span class="info-key">Status</span>
@@ -1826,7 +1826,7 @@
           </div>
           <div>
             <div class="contact-item-label">Email</div>
-            <div class="contact-item-value"><a href="mailto:mehulgajjaraes@gmail.com">mehulgajjaraes&#64;gmail&#46;com</a></div>
+            <div class="contact-item-value"><a href="/cdn-cgi/l/email-protection#80ede5e8f5ece7e1eaeae1f2e1e5f3c0e7ede1e9ecaee3efed">mehulgajjaraes&#64;gmail&#46;com</a></div>
           </div>
         </div>
 
@@ -1855,7 +1855,7 @@
         <div class="label">Availability</div>
         <h3 class="display">Open to Senior Roles</h3>
         <p>Looking for challenging Senior Android Developer positions where I can contribute to innovative mobile products and lead engineering teams.</p>
-        <a href="mailto:mehulgajjaraes@gmail.com" class="btn btn-primary" style="width:100%; justify-content:center; margin-top:4px;">
+        <a href="/cdn-cgi/l/email-protection#caa7afa2bfa6adaba0a0abb8abafb98aada7aba3a6e4a9a5a7" class="btn btn-primary" style="width:100%; justify-content:center; margin-top:4px;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,4 12,13 2,4"/></svg>
           Send Email
         </a>
@@ -1902,16 +1902,7 @@
       Profile Views
     </div>
     <span class="counter-num" id="visitorCount">—</span>
-    <span class="counter-dot"></span>
-    <div class="counter-label">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-        <line x1="16" y1="2" x2="16" y2="6"/>
-        <line x1="8" y1="2" x2="8" y2="6"/>
-        <line x1="3" y1="10" x2="21" y2="10"/>
-      </svg>
-      Last visit: <span id="lastVisit" style="color:var(--text-2); margin-left:4px;">—</span>
-    </div>
+
   </div>
 </footer>
 
@@ -1955,119 +1946,49 @@
 <!-- ══════════════════════════════════════
      JAVASCRIPT
 ══════════════════════════════════════ -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  // ── Visitor Counter (unique by IP via CountAPI) ──
-  (function() {
-    const KEY_LAST = 'mv_resume_last_visit';
-    const KEY_LAST_KNOWN_TOTAL = 'mv_resume_last_known_total';
-    const KEY_LOCAL_FALLBACK_COUNT = 'mv_resume_local_fallback_count';
-    const COUNTER_NAMESPACE = 'mehul-info';
-    const UNIQUE_TOTAL_KEY = 'unique-visitors-total';
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // ── Visitor Counter (counterapi.dev — increments on every visit) ──
+  (function () {
+    const NAMESPACE  = 'mehul-vishroliya-resume';
+    const COUNTER_KEY = 'profile-views';
 
-    const el = document.getElementById('visitorCount');
-    const lastEl = document.getElementById('lastVisit');
+    const el     = document.getElementById('visitorCount');
 
-    function setLastVisit() {
-      try {
-        const now = new Date();
-        const previousVisitRaw = localStorage.getItem(KEY_LAST);
-        localStorage.setItem(KEY_LAST, now.toISOString());
-
-        const previousVisit = previousVisitRaw ? new Date(previousVisitRaw) : null;
-        const hasValidPreviousVisit = previousVisit instanceof Date && !Number.isNaN(previousVisit.getTime());
-        if (lastEl) {
-          lastEl.textContent = hasValidPreviousVisit
-            ? previousVisit.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
-            : 'First visit';
-        }
-      } catch (e) {
-        if (lastEl) lastEl.textContent = 'Unavailable';
-      }
-    }
-
+    // ── Animated Count-Up ───────────────────────────────────────────
     function animateCount(target) {
       if (!el) return;
-      const safeTarget = Math.max(0, Number.parseInt(target, 10) || 0);
-      try {
-        localStorage.setItem(KEY_LAST_KNOWN_TOTAL, String(safeTarget));
-      } catch (e) {}
-      let cur = 0;
-      const step = Math.max(1, Math.floor(safeTarget / 40));
+      const safeTarget = Math.max(1, parseInt(target, 10) || 1);
+      // Start near the end so animation is visible but not too long
+      let cur = Math.max(0, safeTarget - Math.min(50, safeTarget));
+      const step = Math.max(1, Math.ceil((safeTarget - cur) / 40));
+      el.textContent = cur.toLocaleString('en-IN');
       const timer = setInterval(() => {
         cur = Math.min(cur + step, safeTarget);
         el.textContent = cur.toLocaleString('en-IN');
         if (cur >= safeTarget) clearInterval(timer);
-      }, 28);
+      }, 30);
     }
 
-    async function getJson(url) {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 8000);
-      const res = await fetch(url, { cache: 'no-store', signal: controller.signal });
-      clearTimeout(timeoutId);
-      if (!res.ok) throw new Error('Request failed');
-      return res.json();
-    }
-
-    async function resolveVisitorIp() {
-      const providers = [
-        'https://api64.ipify.org?format=json',
-        'https://api.ipify.org?format=json'
-      ];
-
-      for (const url of providers) {
-        try {
-          const data = await getJson(url);
-          if (data && data.ip) return data.ip;
-        } catch (e) {}
-      }
-      throw new Error('Unable to resolve IP');
-    }
-
-    async function getOrCreateUniqueCount() {
-      // Fetch visitor IP from public APIs.
-      const ip = await resolveVisitorIp();
-
-      // CountAPI keys cannot safely use raw IP characters.
-      // URL-safe key: avoid "/" and "+" from base64 in path segments.
-      const ipKey = 'visitor-' + btoa(ip)
-        .replace(/=+$/g, '')
-        .replace(/\+/g, '-')
-        .replace(/\//g, '_');
-
-      // Reliable unique check:
-      // First hit for this IP returns value=1; later visits return >1.
-      const visitorHit = await getJson('https://api.countapi.xyz/hit/' + COUNTER_NAMESPACE + '/' + ipKey);
-      const isFirstSeen = visitorHit && Number(visitorHit.value) === 1;
-
-      if (isFirstSeen) {
-        const totalHit = await getJson('https://api.countapi.xyz/hit/' + COUNTER_NAMESPACE + '/' + UNIQUE_TOTAL_KEY);
-        return (totalHit && typeof totalHit.value === 'number') ? totalHit.value : 0;
-      }
-
-      const totalData = await getJson('https://api.countapi.xyz/get/' + COUNTER_NAMESPACE + '/' + UNIQUE_TOTAL_KEY);
-      return (totalData && typeof totalData.value === 'number') ? totalData.value : 0;
-    }
-
-    setLastVisit();
+    // ── Fetch & Increment ───────────────────────────────────────────
     if (el) el.textContent = '...';
 
-    getOrCreateUniqueCount()
-      .then((count) => animateCount(count))
-      .catch(() => {
-        if (!el) return;
-        try {
-          const cached = Number.parseInt(localStorage.getItem(KEY_LAST_KNOWN_TOTAL) || '0', 10);
-          if (Number.isFinite(cached) && cached > 0) {
-            animateCount(cached);
-            return;
-          }
-          const localFallback = Math.max(0, Number.parseInt(localStorage.getItem(KEY_LOCAL_FALLBACK_COUNT) || '0', 10)) + 1;
-          localStorage.setItem(KEY_LOCAL_FALLBACK_COUNT, String(localFallback));
-          animateCount(localFallback);
-          return;
-        } catch (e) {}
-        el.textContent = '—';
+    // counterapi.dev is the maintained successor to countapi.xyz
+    // /up increments the counter and returns { count: N }
+    fetch(
+      'https://api.counterapi.dev/v1/' + NAMESPACE + '/' + COUNTER_KEY + '/up',
+      { cache: 'no-store' }
+    )
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        // counterapi.dev returns { count: N }
+        var count = (data && typeof data.count === 'number') ? data.count : 0;
+        animateCount(count);
+      })
+      .catch(function () {
+        if (el) el.textContent = '—';
       });
   })();
 
@@ -2129,13 +2050,4 @@
     });
   }, { threshold: 0.08 });
 
-  document.querySelectorAll('.exp-card, .project-card, .skill-category, .edu-item, .cert-item').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(14px)';
-    el.style.transition = 'opacity 0.45s ease, transform 0.45s ease';
-    observer.observe(el);
-  });
-</script>
-
-</body>
-</html>
+  document.queryS
