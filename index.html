@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -194,7 +193,7 @@
         radial-gradient(ellipse 80% 60% at 70% 50%, rgba(24,119,242,0.10) 0%, transparent 65%),
         radial-gradient(ellipse 50% 40% at 10% 90%, rgba(24,119,242,0.06) 0%, transparent 60%),
         var(--navy);
-      overflow: hidden;
+      overflow: visible;
       position: relative;
     }
     .hero::before {
@@ -794,7 +793,7 @@
     ═══════════════════════════════════════════════ */
     @media print {
       * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-      .nav, .scroll-top, .hamburger, .mobile-nav, .hero-actions, .social-row,
+      .nav, .floating-actions, .hamburger, .mobile-nav, .hero-actions, .social-row,
       .connect-links, .hero-badge, .section-divider { display: none !important; }
       body { background: #fff !important; color: #111 !important; font-size: 11pt; }
       .hero { min-height: auto; padding-top: 24px; background: #fff !important; }
@@ -880,8 +879,18 @@
       transform: translateY(-1px);
     }
 
+    .floating-actions {
+      position: fixed;
+      z-index: 150;
+      right: 20px;
+      bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
     .scroll-top {
-      position: fixed; bottom: 24px; right: 20px;
+      position: static;
       width: 48px; height: 48px;
       background: var(--accent);
       border-radius: 14px;
@@ -895,12 +904,34 @@
       -webkit-tap-highlight-color: transparent;
       touch-action: manipulation;
     }
+    .whatsapp-float {
+      display: none;
+      width: 52px;
+      height: 52px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 16px;
+      color: #fff;
+      background: #25D366;
+      box-shadow: 0 10px 28px rgba(37,211,102,0.30);
+      transition: transform var(--transition), box-shadow var(--transition);
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+    .whatsapp-float:hover {
+      color: #fff;
+      transform: translateY(-3px);
+      box-shadow: 0 14px 34px rgba(37,211,102,0.38);
+    }
+    .whatsapp-float:active { transform: scale(0.92); }
+    .whatsapp-float svg { width: 27px; height: 27px; }
     .scroll-top.visible { opacity: 1; visibility: visible; }
     .scroll-top:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(24,119,242,0.28); }
     .scroll-top:active { transform: scale(0.92); }
     .scroll-top svg { width: 20px; height: 20px; color: var(--white); pointer-events: none; }
     @media (max-width: 768px) {
-      .scroll-top { bottom: 20px; right: 16px; width: 52px; height: 52px; border-radius: 16px; }
+      .floating-actions { right: 16px; bottom: 20px; }
+      .scroll-top { width: 52px; height: 52px; border-radius: 16px; }
     }
 
     /* ═══════════════════════════════════════════════
@@ -930,6 +961,281 @@
     .mobile-nav-close svg { width: 28px; height: 28px; }
 
     /* ═══════════════════════════════════════════════
+       ALWAYS-ON MOBILE DEVICE MOCKUP
+    ═══════════════════════════════════════════════ */
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 8%, rgba(66,133,244,0.20), transparent 32%),
+        radial-gradient(circle at 18% 78%, rgba(61,220,132,0.08), transparent 25%),
+        radial-gradient(circle at 84% 66%, rgba(126,87,194,0.09), transparent 26%),
+        linear-gradient(145deg, #080b11 0%, #121925 48%, #07090d 100%);
+    }
+    .device-stage {
+      position: relative;
+      isolation: isolate;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      overflow: hidden;
+    }
+    .device-stage::before {
+      content: '';
+      position: absolute;
+      z-index: -3;
+      inset: 0;
+      opacity: 0.24;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+      background-size: 54px 54px;
+      mask-image: radial-gradient(circle at center, #000 12%, transparent 76%);
+    }
+    .device-stage::after {
+      content: '';
+      position: absolute;
+      z-index: -2;
+      width: 620px;
+      height: 620px;
+      border: 1px solid rgba(138,180,248,0.09);
+      border-radius: 50%;
+      box-shadow:
+        0 0 0 90px rgba(138,180,248,0.025),
+        0 0 0 180px rgba(138,180,248,0.018);
+    }
+    .android-doodles {
+      position: absolute;
+      z-index: 0;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .doodle {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      opacity: 0.14;
+      filter: drop-shadow(0 12px 26px rgba(0,0,0,0.28));
+      will-change: transform;
+    }
+    .doodle svg { width: 100%; height: 100%; overflow: visible; }
+    .doodle-android {
+      top: 12%;
+      left: 10%;
+      width: 120px;
+      height: 120px;
+      color: #3ddc84;
+      transform: rotate(-8deg);
+    }
+    .doodle-kotlin {
+      top: 16%;
+      right: 11%;
+      width: 98px;
+      height: 98px;
+      color: #a78bfa;
+    }
+    .doodle-compose {
+      bottom: 13%;
+      left: 13%;
+      width: 112px;
+      height: 112px;
+      color: #8ab4f8;
+    }
+    .doodle-code {
+      right: 11%;
+      bottom: 15%;
+      color: #fbbc04;
+      font: 600 52px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+      letter-spacing: -0.12em;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .doodle { animation: none; }
+    }
+    .tool-cloud {
+      position: absolute;
+      z-index: 1;
+      top: 50%;
+      width: min(300px, calc(50vw - 250px));
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .tool-cloud-left { left: clamp(28px, 6vw, 110px); }
+    .tool-cloud-right { right: clamp(28px, 6vw, 110px); }
+    .tool-cloud-heading {
+      margin: 0 0 16px;
+      color: rgba(255,255,255,0.50);
+      font-size: 0.69rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+    .tool-list {
+      overflow: hidden;
+      border: 1px solid rgba(138,180,248,0.14);
+      border-radius: 18px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015));
+      box-shadow: inset 0 1px rgba(255,255,255,0.045), 0 18px 50px rgba(0,0,0,0.14);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .tool-badge {
+      min-height: 70px;
+      display: block;
+      padding: 15px 18px;
+      color: rgba(235,240,248,0.84);
+      border-bottom: 1px solid rgba(138,180,248,0.10);
+    }
+    .tool-badge:last-child { border-bottom: 0; }
+    .tool-copy { display: block; min-width: 0; }
+    .tool-name {
+      display: block;
+      color: rgba(245,247,251,0.88);
+      font-size: 0.84rem;
+      font-weight: 600;
+      line-height: 1.35;
+      letter-spacing: 0.015em;
+    }
+    .tool-note {
+      display: block;
+      margin-top: 6px;
+      overflow: hidden;
+      color: rgba(185,196,212,0.58);
+      font-size: 0.68rem;
+      line-height: 1.4;
+      letter-spacing: 0.015em;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    @media (max-width: 1180px) {
+      .tool-cloud { width: 190px; }
+      .tool-cloud-left { left: 26px; }
+      .tool-cloud-right { right: 26px; }
+      .tool-note { display: none; }
+      .tool-badge { min-height: 52px; padding: 15px; }
+    }
+    .phone {
+      position: relative;
+      z-index: 2;
+      width: min(420px, calc(100vw - 28px));
+      height: min(900px, calc(100vh - 44px));
+      height: min(900px, calc(100dvh - 44px));
+      padding: 8px;
+      overflow: visible;
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 42px;
+      background:
+        linear-gradient(100deg, rgba(255,255,255,0.14), transparent 10% 88%, rgba(255,255,255,0.10)),
+        linear-gradient(145deg, #353b45 0%, #151920 28%, #07090d 68%, #252b34 100%);
+      box-shadow:
+        0 48px 110px rgba(0,0,0,0.62),
+        0 16px 40px rgba(0,0,0,0.52),
+        0 0 0 1px rgba(0,0,0,0.70),
+        inset 0 1px 1px rgba(255,255,255,0.30),
+        inset 0 -1px 1px rgba(255,255,255,0.07);
+    }
+    .phone::before,
+    .phone::after {
+      content: '';
+      position: absolute;
+      right: -3px;
+      width: 4px;
+      border-radius: 0 4px 4px 0;
+      background: linear-gradient(#3c424c, #14171d);
+      box-shadow: inset 1px 0 rgba(255,255,255,0.10);
+    }
+    .phone::before { top: 138px; height: 88px; }
+    .phone::after {
+      top: 242px;
+      height: 50px;
+      left: -3px;
+      right: auto;
+      border-radius: 4px 0 0 4px;
+    }
+    .phone-camera {
+      position: absolute;
+      z-index: 400;
+      top: 17px;
+      left: 50%;
+      width: 13px;
+      height: 13px;
+      transform: translateX(-50%);
+      border: 2px solid #090b0f;
+      border-radius: 50%;
+      background: radial-gradient(circle at 38% 35%, #39557c 0 10%, #101722 35%, #000 72%);
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 1px 3px rgba(0,0,0,0.8);
+      pointer-events: none;
+    }
+    .phone-screen {
+      position: relative;
+      isolation: isolate;
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      border-radius: 34px;
+      clip-path: inset(0 round 34px);
+      background: var(--navy);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.12);
+      scrollbar-width: none;
+    }
+    .phone-screen::-webkit-scrollbar { display: none; }
+
+    /* Force the site's compact layout inside the device at every browser width. */
+    .phone-screen .container { width: 88%; }
+    .phone-screen .nav {
+      position: sticky;
+      top: 0;
+      left: auto;
+      right: auto;
+    }
+    .phone-screen .nav-links { display: none; }
+    .phone-screen .hamburger { display: flex; }
+    .phone-screen .section { padding-block: 56px; }
+    .phone-screen .grid-2,
+    .phone-screen .grid-3,
+    .phone-screen .grid-4,
+    .phone-screen .hero-inner,
+    .phone-screen .about-inner,
+    .phone-screen .skills-grid,
+    .phone-screen .project-grid,
+    .phone-screen .edu-cert-inner,
+    .phone-screen .contact-inner,
+    .phone-screen .highlight-grid {
+      grid-template-columns: 1fr;
+    }
+    .phone-screen .hero {
+      min-height: calc(100% - 64px);
+      padding-top: 0;
+    }
+    .phone-screen .hero-inner { gap: 40px; padding-block: 48px; }
+    .phone-screen .hero-card { max-width: 100%; }
+    .phone-screen h1 { font-size: 2rem; }
+    .phone-screen .timeline { padding-left: 24px; }
+    .phone-screen .stat-grid { grid-template-columns: repeat(2,1fr); }
+    .phone-screen .exp-header { flex-direction: column; align-items: flex-start; }
+    .phone-screen .hero-actions { flex-wrap: wrap; }
+    .phone-screen .btn { width: 100%; justify-content: center; }
+    .phone-screen .mobile-nav {
+      position: sticky;
+      top: 0;
+      height: 100%;
+      border-radius: 34px;
+    }
+    .phone-screen .floating-actions {
+      position: sticky;
+      z-index: 150;
+      float: right;
+      bottom: 18px;
+      right: auto;
+      margin: -72px 16px 20px 0;
+    }
+
+    /* ═══════════════════════════════════════════════
        RESPONSIVE
     ═══════════════════════════════════════════════ */
     @media (max-width: 1024px) {
@@ -956,10 +1262,91 @@
       .hero-actions { flex-wrap: wrap; }
       .btn { width: 100%; justify-content: center; }
     }
+    @media (max-width: 900px) {
+      .tool-cloud { display: none; }
+      .doodle { opacity: 0.10; }
+    }
+    @media (max-width: 680px) {
+      .device-stage::before, .device-stage::after { display: none; }
+      .android-doodles { display: none; }
+    }
+    .mobile-visitor .whatsapp-float { display: flex; }
+    .mobile-visitor .phone-screen .floating-actions { margin-top: -134px; }
+    @media (max-width: 520px), (max-height: 700px) {
+      .device-stage { padding: 0; }
+      .phone {
+        width: min(430px, 100vw);
+        height: 100vh;
+        height: 100dvh;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+      }
+      .phone::before, .phone::after, .phone-camera { display: none; }
+      .phone-screen { border-radius: 0; }
+      .phone-screen .mobile-nav { border-radius: 0; }
+    }
+    @media print {
+      body { overflow: visible; background: #fff !important; }
+      .device-stage { display: block; min-height: 0; padding: 0; }
+      .phone { width: auto; height: auto; padding: 0; border: 0; border-radius: 0; box-shadow: none; background: none; overflow: visible; }
+      .phone-camera { display: none; }
+      .phone-screen { width: auto; height: auto; overflow: visible; border-radius: 0; box-shadow: none; }
+    }
   </style>
 </head>
 
 <body>
+<main class="device-stage">
+  <div class="android-doodles" aria-hidden="true">
+    <div class="doodle doodle-android">
+      <svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="3">
+        <path d="M34 45h52v40a9 9 0 0 1-9 9H43a9 9 0 0 1-9-9V45Z"/>
+        <path d="M39 45c2-16 11-25 21-25s19 9 21 25M46 21l-7-11M74 21l7-11"/>
+        <circle cx="49" cy="34" r="2.5" fill="currentColor" stroke="none"/>
+        <circle cx="71" cy="34" r="2.5" fill="currentColor" stroke="none"/>
+        <path d="M34 55H23v27M86 55h11v27M47 94v16M73 94v16" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="doodle doodle-kotlin">
+      <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="3">
+        <path d="M16 16h68L50 50l34 34H16V16Z"/>
+        <path d="M16 84 84 16M16 50h34" opacity=".55"/>
+      </svg>
+    </div>
+    <div class="doodle doodle-compose">
+      <svg viewBox="0 0 112 112" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round">
+        <path d="m56 14 39 21-39 21-39-21 39-21Z"/>
+        <path d="m17 51 39 21 39-21M17 67l39 21 39-21"/>
+      </svg>
+    </div>
+    <div class="doodle doodle-code">&lt;/&gt;</div>
+  </div>
+
+  <div class="tool-cloud tool-cloud-left" aria-hidden="true">
+    <div class="tool-cloud-heading">Core Android</div>
+    <div class="tool-list">
+      <div class="tool-badge"><span class="tool-copy"><span class="tool-name">Kotlin</span><span class="tool-note">Primary language for production Android applications</span></span></div>
+      <div class="tool-badge"><span class="tool-copy"><span class="tool-name">Jetpack Compose</span><span class="tool-note">Modern, adaptive and declarative user interfaces</span></span></div>
+      <div class="tool-badge"><span class="tool-copy"><span class="tool-name">Coroutines &amp; Flow</span><span class="tool-note">Structured concurrency and reactive data streams</span></span></div>
+      <div class="tool-badge"><span class="tool-copy"><span class="tool-name">Android SDK &amp; Jetpack</span><span class="tool-note">Lifecycle-aware components and platform APIs</span></span></div>
+      <div class="tool-badge"><span class="tool-copy"><span class="tool-name">ARCore</span><span class="tool-note">Production-grade augmented reality experiences</span></span></div>
+    </div>
+  </div>
+
+  <div class="tool-cloud tool-cloud-right" aria-hidden="true">
+    <div class="tool-cloud-heading">Engineering &amp; Delivery</div>
+    <div class="tool-list">
+      <div class="tool-badge"><span class="tool-copy"><span class="tool-name">MVVM &amp; Clean Architecture</span><span class="tool-note">Scalable, testable and maintainable application design</span></span></div>
+      <div class="tool-badge"><span class="tool-copy"><span class="tool-name">Hilt &amp; Dagger 2</span><span class="tool-note">Dependency injection and modular codebases</span></span></div>
+      <div class="tool-badge"><span class="tool-copy"><span class="tool-name">Retrofit, Room &amp; Firebase</span><span class="tool-note">Networking, persistence, messaging and analytics</span></span></div>
+      <div class="tool-badge"><span class="tool-copy"><span class="tool-name">Testing &amp; CI/CD</span><span class="tool-note">JUnit, Espresso, Fastlane and GitHub Actions</span></span></div>
+      <div class="tool-badge"><span class="tool-copy"><span class="tool-name">AI-Assisted Development</span><span class="tool-note">ChatGPT, Claude, Codex, Cursor, Grok and Windsurf</span></span></div>
+    </div>
+  </div>
+  <div class="phone" aria-label="Mobile portfolio preview">
+    <div class="phone-camera" aria-hidden="true"></div>
+    <div class="phone-screen" id="phoneScreen">
 
 <!-- ══════════════════════════════════════
      NAVIGATION
@@ -1896,6 +2283,17 @@
   </div>
 </footer>
 
+<div class="footer-counter" aria-label="Site visitor count">
+  <span class="counter-label">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12Z"/>
+      <circle cx="12" cy="12" r="3"/>
+    </svg>
+    Site visitors
+  </span>
+  <span class="counter-num" id="visitorCount" aria-live="polite">...</span>
+</div>
+
 <!-- ══════════════════════════════════════
      HIDDEN ATS KEYWORDS BLOCK
      Invisible to human readers — fully readable by
@@ -1928,22 +2326,92 @@
   Portugal UK Canada USA international project delivery
 </div>
 
-<!-- Scroll to Top -->
-<button class="scroll-top" id="scrollTop" aria-label="Scroll to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
-</button>
+<!-- Mobile WhatsApp + Scroll to Top -->
+<div class="floating-actions">
+  <a
+    class="whatsapp-float"
+    href="https://wa.me/917575878798"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Chat with Mehul on WhatsApp"
+  >
+    <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+      <path d="M16.04 3C8.85 3 3 8.73 3 15.78c0 2.25.6 4.45 1.73 6.38L3 28.5l6.57-1.68a13.2 13.2 0 0 0 6.46 1.66h.01C23.22 28.48 29 22.74 29 15.7 29 8.66 23.22 3 16.04 3Zm0 23.32c-2.04 0-4.04-.54-5.78-1.57l-.42-.25-3.9 1 1.04-3.72-.27-.43a10.5 10.5 0 0 1-1.62-5.57c0-5.86 4.91-10.62 10.96-10.62 6.04 0 10.86 4.7 10.86 10.55 0 5.86-4.82 10.61-10.87 10.61Zm6-7.94c-.33-.16-1.96-.95-2.26-1.06-.3-.1-.52-.16-.74.16-.22.33-.85 1.06-1.04 1.28-.19.22-.38.24-.71.08-.33-.16-1.4-.5-2.66-1.6a9.8 9.8 0 0 1-1.84-2.24c-.19-.32-.02-.5.14-.66.15-.14.33-.38.5-.57.16-.19.22-.32.33-.54.1-.22.05-.41-.03-.57-.08-.16-.74-1.76-1.01-2.41-.27-.64-.54-.55-.74-.56h-.63c-.22 0-.57.08-.88.4-.3.33-1.15 1.12-1.15 2.72 0 1.6 1.19 3.15 1.35 3.37.17.22 2.34 3.51 5.67 4.92.79.34 1.41.54 1.9.69.79.25 1.52.21 2.09.13.64-.09 1.96-.79 2.23-1.55.28-.76.28-1.41.2-1.55-.09-.13-.31-.21-.64-.37Z"/>
+    </svg>
+  </a>
+  <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+</main>
 
 <!-- ══════════════════════════════════════
      JAVASCRIPT
 ══════════════════════════════════════ -->
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script>
-  // ── Visitor Counter (counterapi.dev — increments on every visit) ──
+  // Show WhatsApp only for visitors using a mobile device.
+  (function setMobileVisitorMode() {
+    const mobileUserAgent = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const compactTouchDevice = window.matchMedia &&
+      window.matchMedia('(max-width: 680px) and (hover: none) and (pointer: coarse)').matches;
+    document.documentElement.classList.toggle('mobile-visitor', mobileUserAgent || compactTouchDevice);
+  })();
+
+  // Let each background doodle roam freely across the entire desktop stage.
+  (function initFreeRoamingDoodles() {
+    const reducedMotion = window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const stage = document.querySelector('.device-stage');
+    const doodles = document.querySelectorAll('.doodle');
+    if (reducedMotion || !stage || !doodles.length || !Element.prototype.animate) return;
+
+    doodles.forEach((doodle, index) => {
+      let x = doodle.offsetLeft;
+      let y = doodle.offsetTop;
+      let rotation = (index % 2 ? 5 : -6);
+
+      function roam() {
+        if (window.innerWidth <= 680) return;
+
+        const maxX = Math.max(0, stage.clientWidth - doodle.offsetWidth - 24);
+        const maxY = Math.max(0, stage.clientHeight - doodle.offsetHeight - 24);
+        const nextX = 12 + Math.random() * Math.max(0, maxX - 12);
+        const nextY = 12 + Math.random() * Math.max(0, maxY - 12);
+        const nextRotation = -18 + Math.random() * 36;
+        const duration = 14000 + Math.random() * 10000;
+
+        const animation = doodle.animate([
+          { transform: `translate(${x - doodle.offsetLeft}px, ${y - doodle.offsetTop}px) rotate(${rotation}deg)` },
+          { transform: `translate(${nextX - doodle.offsetLeft}px, ${nextY - doodle.offsetTop}px) rotate(${nextRotation}deg)` }
+        ], {
+          duration,
+          easing: 'ease-in-out',
+          fill: 'forwards'
+        });
+
+        x = nextX;
+        y = nextY;
+        rotation = nextRotation;
+        animation.onfinish = roam;
+      }
+
+      setTimeout(roam, index * 900);
+    });
+  })();
+
+  // ── Unique Visitor Counter ───────────────────────────────────────
+  // Counts once per browser. Clearing site data or using another
+  // browser/device is treated as a new visitor.
   (function () {
     const NAMESPACE  = 'mehul-vishroliya-resume';
-    const COUNTER_KEY = 'profile-views';
-
-    const el     = document.getElementById('visitorCount');
+    const COUNTER_KEY = 'unique-visitors';
+    const VISITOR_KEY = 'mehul-info-unique-visitor-v1';
+    const COUNTER_URL = 'https://api.counterapi.dev/v1/' + NAMESPACE + '/' + COUNTER_KEY;
+    const el = document.getElementById('visitorCount');
 
     // ── Animated Count-Up ───────────────────────────────────────────
     function animateCount(target) {
@@ -1960,25 +2428,35 @@
       }, 30);
     }
 
-    // ── Fetch & Increment ───────────────────────────────────────────
     if (el) el.textContent = '...';
 
-    // counterapi.dev is the maintained successor to countapi.xyz
-    // /up increments the counter and returns { count: N }
-    fetch(
-      'https://api.counterapi.dev/v1/' + NAMESPACE + '/' + COUNTER_KEY + '/up',
-      { cache: 'no-store' }
-    )
+    let isNewVisitor = false;
+    try {
+      const visitorState = localStorage.getItem(VISITOR_KEY);
+      isNewVisitor = visitorState !== 'counted' && visitorState !== 'pending';
+      if (isNewVisitor) localStorage.setItem(VISITOR_KEY, 'pending');
+    } catch (_) {
+      // If storage is unavailable, read the total without incrementing.
+    }
+
+    fetch(isNewVisitor ? COUNTER_URL + '/up' : COUNTER_URL, { cache: 'no-store' })
       .then(function (res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
         return res.json();
       })
       .then(function (data) {
-        // counterapi.dev returns { count: N }
-        var count = (data && typeof data.count === 'number') ? data.count : 0;
+        var count = data && typeof data.count === 'number'
+          ? data.count
+          : (data && typeof data.value === 'number' ? data.value : 0);
+        if (isNewVisitor) {
+          try { localStorage.setItem(VISITOR_KEY, 'counted'); } catch (_) {}
+        }
         animateCount(count);
       })
       .catch(function () {
+        if (isNewVisitor) {
+          try { localStorage.removeItem(VISITOR_KEY); } catch (_) {}
+        }
         if (el) el.textContent = '—';
       });
   })();
@@ -2027,13 +2505,19 @@
 
   // Scroll-to-top visibility
   const scrollTopBtn = document.getElementById('scrollTop');
+  const phoneScreen = document.getElementById('phoneScreen');
   function handleScroll() {
     if (!scrollTopBtn) return;
-    scrollTopBtn.classList.toggle('visible', window.scrollY > 300);
+    const scrollPosition = phoneScreen ? phoneScreen.scrollTop : window.scrollY;
+    scrollTopBtn.classList.toggle('visible', scrollPosition > 300);
   }
   if (scrollTopBtn) {
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('touchmove', handleScroll, { passive: true });
+    const scrollTarget = phoneScreen || window;
+    scrollTarget.addEventListener('scroll', handleScroll, { passive: true });
+    scrollTarget.addEventListener('touchmove', handleScroll, { passive: true });
+    scrollTopBtn.addEventListener('click', () => {
+      scrollTarget.scrollTo({ top: 0, behavior: 'smooth' });
+    });
     // Show immediately if already scrolled (e.g. page reload)
     handleScroll();
   }
