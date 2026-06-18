@@ -1283,7 +1283,11 @@
         border-radius: 0;
       }
       .phone::before, .phone::after, .phone-camera { display: none; }
-      .phone-screen { border-radius: 0; }
+      .phone-screen {
+        border-radius: 0;
+        clip-path: none;
+        box-shadow: none;
+      }
       .phone-screen .mobile-nav { border-radius: 0; }
     }
     @media print {
