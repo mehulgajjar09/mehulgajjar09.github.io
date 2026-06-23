@@ -760,33 +760,6 @@
       font-size: 0.75rem; color: var(--text-3);
       letter-spacing: 0.03em;
     }
-    .footer-counter {
-      background: var(--navy);
-      border-top: 1px solid var(--border);
-      padding-block: 14px;
-      text-align: center;
-      display: flex; align-items: center; justify-content: center; gap: 12px;
-      flex-wrap: wrap;
-    }
-    .counter-label {
-      font-size: 0.75rem; color: var(--text-3);
-      display: flex; align-items: center; gap: 7px;
-      letter-spacing: 0.04em;
-    }
-    .counter-label svg { color: var(--accent); width: 13px; height: 13px; flex-shrink: 0; }
-    .counter-num {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1rem;
-      color: var(--accent);
-      min-width: 56px;
-      display: inline-block;
-      letter-spacing: 0.05em;
-    }
-    .counter-dot {
-      width: 5px; height: 5px; border-radius: 50%;
-      background: var(--border); display: inline-block;
-    }
-
     /* ═══════════════════════════════════════════════
        PRINT / DOWNLOAD STYLES
        Activated when recruiter clicks Download Resume
@@ -815,7 +788,6 @@
       .edu-cert { background: #fff !important; }
       .contact { display: none !important; }
       footer { display: none !important; }
-      .footer-counter { display: none !important; }
       .ats-keywords { display: none !important; }
       h2 { color: #0B1120 !important; font-size: 14pt; }
       h3 { color: #0B1120 !important; font-size: 11pt; }
@@ -976,6 +948,16 @@
     .device-stage {
       position: relative;
       isolation: isolate;
+      --stage-x: 0px;
+      --stage-y: 0px;
+      --stage-bg-x: 0px;
+      --stage-bg-y: 0px;
+      --stage-ring-x: 0px;
+      --stage-ring-y: 0px;
+      --stage-left-x: 0px;
+      --stage-left-y: 0px;
+      --stage-right-x: 0px;
+      --stage-right-y: 0px;
       min-height: 100vh;
       min-height: 100dvh;
       display: grid;
@@ -994,6 +976,7 @@
         linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
       background-size: 54px 54px;
       mask-image: radial-gradient(circle at center, #000 12%, transparent 76%);
+      transform: translate3d(var(--stage-bg-x), var(--stage-bg-y), 0);
     }
     .device-stage::after {
       content: '';
@@ -1005,7 +988,109 @@
       border-radius: 50%;
       box-shadow:
         0 0 0 90px rgba(138,180,248,0.025),
-        0 0 0 180px rgba(138,180,248,0.018);
+        0 0 0 180px rgba(138,180,248,0.018),
+        0 0 90px rgba(56,189,248,0.08);
+      transform: rotateX(70deg) translate3d(var(--stage-ring-x), var(--stage-ring-y), -80px);
+      animation: stageOrbit 32s linear infinite;
+    }
+    .cosmic-particles {
+      position: absolute;
+      z-index: -1;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: 0.68;
+      mix-blend-mode: screen;
+    }
+    .nebula-layer,
+    .scanline-layer {
+      position: absolute;
+      inset: -14%;
+      pointer-events: none;
+    }
+    .nebula-layer {
+      z-index: -2;
+      background:
+        radial-gradient(circle at 24% 28%, rgba(56,189,248,0.14), transparent 26%),
+        radial-gradient(circle at 76% 26%, rgba(168,85,247,0.11), transparent 29%),
+        radial-gradient(circle at 52% 82%, rgba(61,220,132,0.08), transparent 25%),
+        conic-gradient(from 120deg at 50% 50%, transparent, rgba(24,119,242,0.12), transparent, rgba(126,87,194,0.10), transparent);
+      filter: blur(34px) saturate(1.2);
+      opacity: 0.72;
+      animation: nebulaDrift 18s ease-in-out infinite alternate;
+    }
+    .scanline-layer {
+      z-index: 4;
+      opacity: 0.06;
+      background: repeating-linear-gradient(0deg, rgba(255,255,255,0.12) 0 1px, transparent 1px 7px);
+      mix-blend-mode: overlay;
+    }
+    .holo-panel {
+      position: absolute;
+      z-index: 1;
+      pointer-events: none;
+      width: 188px;
+      padding: 16px;
+      border: 1px solid rgba(138,180,248,0.18);
+      border-radius: 22px;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.065), rgba(255,255,255,0.018)),
+        radial-gradient(circle at top left, rgba(56,189,248,0.13), transparent 55%);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow:
+        inset 0 1px rgba(255,255,255,0.08),
+        0 22px 70px rgba(0,0,0,0.20),
+        0 0 36px rgba(56,189,248,0.06);
+      color: rgba(235,240,248,0.82);
+      animation: holoFloat 8s ease-in-out infinite;
+    }
+    .holo-panel::before {
+      content: '';
+      display: block;
+      width: 42px;
+      height: 3px;
+      margin-bottom: 12px;
+      border-radius: 99px;
+      background: linear-gradient(90deg, #8ab4f8, #3ddc84, transparent);
+      box-shadow: 0 0 18px rgba(138,180,248,0.45);
+    }
+    .holo-panel strong {
+      display: block;
+      color: rgba(255,255,255,0.88);
+      font-size: 0.76rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .holo-panel span {
+      display: block;
+      margin-top: 5px;
+      color: rgba(185,196,212,0.64);
+      font-size: 0.68rem;
+      line-height: 1.45;
+    }
+    .holo-panel-1 {
+      top: 8%;
+      left: clamp(22px, 14vw, 210px);
+      transform: translate3d(var(--stage-left-x), var(--stage-left-y), 0) rotate(-5deg);
+    }
+    .holo-panel-2 {
+      right: clamp(22px, 12vw, 180px);
+      bottom: 8%;
+      animation-delay: -3s;
+      transform: translate3d(var(--stage-right-x), var(--stage-right-y), 0) rotate(5deg);
+    }
+    @keyframes stageOrbit {
+      to { rotate: 360deg; }
+    }
+    @keyframes nebulaDrift {
+      0% { transform: translate3d(-2%, -1%, 0) scale(1) rotate(0deg); }
+      100% { transform: translate3d(2%, 1%, 0) scale(1.08) rotate(6deg); }
+    }
+    @keyframes holoFloat {
+      0%, 100% { margin-top: 0; filter: brightness(1); }
+      50% { margin-top: -14px; filter: brightness(1.12); }
     }
     .android-doodles {
       position: absolute;
@@ -1268,7 +1353,11 @@
     }
     @media (max-width: 680px) {
       .device-stage::before, .device-stage::after { display: none; }
-      .android-doodles { display: none; }
+      .android-doodles,
+      .cosmic-particles,
+      .nebula-layer,
+      .scanline-layer,
+      .holo-panel { display: none; }
     }
     .mobile-visitor .whatsapp-float { display: flex; }
     .mobile-visitor .phone-screen .floating-actions { margin-top: -134px; }
@@ -1290,6 +1379,23 @@
       }
       .phone-screen .mobile-nav { border-radius: 0; }
     }
+    @media (max-width: 520px), (hover: none) and (pointer: coarse) {
+      html,
+      body {
+        min-height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+        overscroll-behavior-y: auto;
+      }
+      .device-stage {
+        min-height: 0;
+        overflow: visible;
+      }
+      .phone-screen {
+        overflow: visible;
+        overscroll-behavior: auto;
+      }
+    }
     @media print {
       body { overflow: visible; background: #fff !important; }
       .device-stage { display: block; min-height: 0; padding: 0; }
@@ -1302,6 +1408,17 @@
 
 <body>
 <main class="device-stage">
+  <canvas class="cosmic-particles" id="cosmicParticles" aria-hidden="true"></canvas>
+  <div class="nebula-layer" aria-hidden="true"></div>
+  <div class="scanline-layer" aria-hidden="true"></div>
+  <div class="holo-panel holo-panel-1" aria-hidden="true">
+    <strong>Android systems</strong>
+    <span>Kotlin · Compose · CI/CD · release telemetry</span>
+  </div>
+  <div class="holo-panel holo-panel-2" aria-hidden="true">
+    <strong>AI-assisted engineering</strong>
+    <span>Codex · ChatGPT · Claude · Cursor · Grok</span>
+  </div>
   <div class="android-doodles" aria-hidden="true">
     <div class="doodle doodle-android">
       <svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="3">
@@ -2287,17 +2404,6 @@
   </div>
 </footer>
 
-<div class="footer-counter" aria-label="Site visitor count">
-  <span class="counter-label">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-      <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12Z"/>
-      <circle cx="12" cy="12" r="3"/>
-    </svg>
-    Site visitors
-  </span>
-  <span class="counter-num" id="visitorCount" aria-live="polite">...</span>
-</div>
-
 <!-- ══════════════════════════════════════
      HIDDEN ATS KEYWORDS BLOCK
      Invisible to human readers — fully readable by
@@ -2365,6 +2471,112 @@
     document.documentElement.classList.toggle('mobile-visitor', mobileUserAgent || compactTouchDevice);
   })();
 
+  // Desktop-only cinematic particles and gentle depth movement.
+  (function initDesktopAtmosphere() {
+    const stage = document.querySelector('.device-stage');
+    const canvas = document.getElementById('cosmicParticles');
+    const reducedMotion = window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isMobileView = window.matchMedia &&
+      window.matchMedia('(max-width: 680px), (hover: none) and (pointer: coarse)').matches;
+    if (!stage || !canvas || isMobileView) return;
+
+    const ctx = canvas.getContext('2d', { alpha: true });
+    if (!ctx) return;
+
+    let width = 0;
+    let height = 0;
+    let dpr = 1;
+    let particles = [];
+    const pointer = { x: 0.5, y: 0.5 };
+
+    function resizeParticles() {
+      const rect = stage.getBoundingClientRect();
+      width = Math.max(1, rect.width);
+      height = Math.max(1, rect.height);
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      canvas.style.width = width + 'px';
+      canvas.style.height = height + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      const count = reducedMotion ? 36 : Math.min(90, Math.max(54, Math.round(width * height / 22000)));
+      particles = Array.from({ length: count }, (_, index) => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        r: 0.7 + Math.random() * 1.8,
+        vx: -0.18 + Math.random() * 0.36,
+        vy: -0.12 + Math.random() * 0.24,
+        hue: index % 3 === 0 ? 205 : (index % 3 === 1 ? 260 : 145),
+        phase: Math.random() * Math.PI * 2
+      }));
+    }
+
+    function drawParticles(time) {
+      ctx.clearRect(0, 0, width, height);
+      const px = pointer.x * width;
+      const py = pointer.y * height;
+
+      particles.forEach((particle, index) => {
+        particle.x += particle.vx + Math.sin(time * 0.001 + particle.phase) * 0.08;
+        particle.y += particle.vy + Math.cos(time * 0.001 + particle.phase) * 0.06;
+
+        if (particle.x < -24) particle.x = width + 24;
+        if (particle.x > width + 24) particle.x = -24;
+        if (particle.y < -24) particle.y = height + 24;
+        if (particle.y > height + 24) particle.y = -24;
+
+        const dist = Math.hypot(particle.x - px, particle.y - py);
+        const glow = Math.max(0, 1 - dist / 240);
+        ctx.beginPath();
+        ctx.fillStyle = `hsla(${particle.hue}, 95%, ${62 + glow * 12}%, ${0.22 + glow * 0.36})`;
+        ctx.shadowBlur = 12 + glow * 16;
+        ctx.shadowColor = `hsla(${particle.hue}, 95%, 62%, ${0.25 + glow * 0.28})`;
+        ctx.arc(particle.x, particle.y, particle.r + glow * 1.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        for (let next = index + 1; next < particles.length; next++) {
+          const other = particles[next];
+          const link = Math.hypot(particle.x - other.x, particle.y - other.y);
+          if (link < 105) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(138,180,248, ${(1 - link / 105) * 0.10})`;
+            ctx.moveTo(particle.x, particle.y);
+            ctx.lineTo(other.x, other.y);
+            ctx.stroke();
+          }
+        }
+      });
+
+      if (!reducedMotion) requestAnimationFrame(drawParticles);
+    }
+
+    function updateDepth(event) {
+      const rect = stage.getBoundingClientRect();
+      pointer.x = (event.clientX - rect.left) / rect.width;
+      pointer.y = (event.clientY - rect.top) / rect.height;
+      const x = (pointer.x - 0.5) * 28;
+      const y = (pointer.y - 0.5) * 28;
+      stage.style.setProperty('--stage-x', x.toFixed(2) + 'px');
+      stage.style.setProperty('--stage-y', y.toFixed(2) + 'px');
+      stage.style.setProperty('--stage-bg-x', (x * -0.18).toFixed(2) + 'px');
+      stage.style.setProperty('--stage-bg-y', (y * -0.18).toFixed(2) + 'px');
+      stage.style.setProperty('--stage-ring-x', (x * 0.12).toFixed(2) + 'px');
+      stage.style.setProperty('--stage-ring-y', (y * 0.12).toFixed(2) + 'px');
+      stage.style.setProperty('--stage-left-x', (x * -0.40).toFixed(2) + 'px');
+      stage.style.setProperty('--stage-left-y', (y * -0.32).toFixed(2) + 'px');
+      stage.style.setProperty('--stage-right-x', (x * 0.52).toFixed(2) + 'px');
+      stage.style.setProperty('--stage-right-y', (y * 0.38).toFixed(2) + 'px');
+    }
+
+    resizeParticles();
+    drawParticles(0);
+    window.addEventListener('resize', resizeParticles, { passive: true });
+    stage.addEventListener('pointermove', updateDepth, { passive: true });
+  })();
+
   // Let each background doodle roam freely across the entire desktop stage.
   (function initFreeRoamingDoodles() {
     const reducedMotion = window.matchMedia &&
@@ -2405,64 +2617,6 @@
 
       setTimeout(roam, index * 900);
     });
-  })();
-
-  // ── Unique Visitor Counter ───────────────────────────────────────
-  // Counts once per browser. Clearing site data or using another
-  // browser/device is treated as a new visitor.
-  (function () {
-    const NAMESPACE  = 'mehul-vishroliya-resume';
-    const COUNTER_KEY = 'unique-visitors';
-    const VISITOR_KEY = 'mehul-info-unique-visitor-v1';
-    const COUNTER_URL = 'https://api.counterapi.dev/v1/' + NAMESPACE + '/' + COUNTER_KEY;
-    const el = document.getElementById('visitorCount');
-
-    // ── Animated Count-Up ───────────────────────────────────────────
-    function animateCount(target) {
-      if (!el) return;
-      const safeTarget = Math.max(1, parseInt(target, 10) || 1);
-      // Start near the end so animation is visible but not too long
-      let cur = Math.max(0, safeTarget - Math.min(50, safeTarget));
-      const step = Math.max(1, Math.ceil((safeTarget - cur) / 40));
-      el.textContent = cur.toLocaleString('en-IN');
-      const timer = setInterval(() => {
-        cur = Math.min(cur + step, safeTarget);
-        el.textContent = cur.toLocaleString('en-IN');
-        if (cur >= safeTarget) clearInterval(timer);
-      }, 30);
-    }
-
-    if (el) el.textContent = '...';
-
-    let isNewVisitor = false;
-    try {
-      const visitorState = localStorage.getItem(VISITOR_KEY);
-      isNewVisitor = visitorState !== 'counted' && visitorState !== 'pending';
-      if (isNewVisitor) localStorage.setItem(VISITOR_KEY, 'pending');
-    } catch (_) {
-      // If storage is unavailable, read the total without incrementing.
-    }
-
-    fetch(isNewVisitor ? COUNTER_URL + '/up' : COUNTER_URL, { cache: 'no-store' })
-      .then(function (res) {
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        return res.json();
-      })
-      .then(function (data) {
-        var count = data && typeof data.count === 'number'
-          ? data.count
-          : (data && typeof data.value === 'number' ? data.value : 0);
-        if (isNewVisitor) {
-          try { localStorage.setItem(VISITOR_KEY, 'counted'); } catch (_) {}
-        }
-        animateCount(count);
-      })
-      .catch(function () {
-        if (isNewVisitor) {
-          try { localStorage.removeItem(VISITOR_KEY); } catch (_) {}
-        }
-        if (el) el.textContent = '—';
-      });
   })();
 
   // Download / Print Resume as PDF
@@ -2510,13 +2664,15 @@
   // Scroll-to-top visibility
   const scrollTopBtn = document.getElementById('scrollTop');
   const phoneScreen = document.getElementById('phoneScreen');
+  const usesWindowScroll = window.matchMedia &&
+    window.matchMedia('(max-width: 520px), (hover: none) and (pointer: coarse)').matches;
+  const scrollTarget = usesWindowScroll ? window : (phoneScreen || window);
   function handleScroll() {
     if (!scrollTopBtn) return;
-    const scrollPosition = phoneScreen ? phoneScreen.scrollTop : window.scrollY;
+    const scrollPosition = usesWindowScroll ? window.scrollY : (phoneScreen ? phoneScreen.scrollTop : window.scrollY);
     scrollTopBtn.classList.toggle('visible', scrollPosition > 300);
   }
   if (scrollTopBtn) {
-    const scrollTarget = phoneScreen || window;
     scrollTarget.addEventListener('scroll', handleScroll, { passive: true });
     scrollTarget.addEventListener('touchmove', handleScroll, { passive: true });
     scrollTopBtn.addEventListener('click', () => {
